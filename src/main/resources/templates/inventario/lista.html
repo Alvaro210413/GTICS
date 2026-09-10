@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Inventario</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container py-4">
+
+<nav class="nav nav-tabs mb-4">
+    <a class="nav-link active" href="/inventario">Inventario</a>
+    <a class="nav-link" href="/marca">Marcas</a>
+    <a class="nav-link" href="/tipo">Tipos de Equipo</a>
+    <a class="nav-link" href="/sede">Sedes</a>
+    <a class="nav-link" href="/trabajador">Trabajadores</a>
+</nav>
+
+<h2>Lista de Inventario</h2>
+
+<div th:if="${msg}" class="alert alert-success my-3"
+     th:classappend="${#strings.contains(msg, 'borrado')} ? 'alert-danger' : 'alert-success'"
+     th:text="${msg}"></div>
+
+<a href="/inventario/nuevo" class="btn btn-primary my-3">Nuevo Inventario</a>
+
+<table class="table table-striped align-middle">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Nombre de inventario</th>
+        <th>Número de Serie</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="inv, stat : ${listaInventario}">
+        <td th:text="${stat.index + 1}">1</td>
+        <td th:text="${inv.nombre}">Nombre</td>
+        <td th:text="${inv.numeroSerie}">Número Serie</td>
+        <td th:text="${inv.estado}">Estado</td>
+        <td>
+            <a th:href="@{'/inventario/editar?id=' + ${inv.idInventario}}" class="btn btn-primary btn-sm">Editar</a>
+            <a th:href="@{'/inventario/borrar?id=' + ${inv.idInventario}}" class="btn btn-danger btn-sm"
+               onclick="return confirm('¿Está seguro de eliminar este ítem?')">Borrar</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

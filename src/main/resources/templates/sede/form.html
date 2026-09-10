@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Sede</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container py-4">
+
+<h2 th:text="${sede.idSede == null} ? 'Nueva Sede' : 'Editar Sede'">Formulario Sede</h2>
+
+<form th:action="@{/sede/guardar}" method="post" th:object="${sede}" class="w-50 my-3">
+    <input type="hidden" th:field="*{idSede}">
+
+    <div class="mb-3">
+        <label class="form-label">Nombre de la Sede</label>
+        <input type="text" class="form-control" th:field="*{nombreSede}" required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Dirección de la Sede</label>
+        <input type="text" class="form-control" th:field="*{direccion}" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Registrar</button>
+    <a href="/sede" class="btn btn-danger">Cancelar</a>
+</form>
+
+<!-- Tabla de Trabajadores de la Sede (Solo visible en modo Edición) -->
+<div th:if="${sede.idSede != null}" class="mt-5">
+    <h3>Lista de Trabajadores de la Sede</h3>
+    <table class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>DNI del trabajador</th>
+            <th>Correo del trabajador</th>
+            <th>Nombre del trabajador</th>
+            <th>Apellidos del trabajador</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="trab, stat : ${listaTrabajadores}">
+            <td th:text="${stat.index + 1}">1</td>
+            <td th:text="${trab.dni}">DNI</td>
+            <td th:text="${trab.correo}">Correo</td>
+            <td th:text="${trab.nombres}">Nombre</td>
+            <td th:text="${trab.apellidos}">Apellidos</td>
+        </tr>
+        <tr th:if="${listaTrabajadores == null or listaTrabajadores.empty}">
+            <td colspan="5" class="text-center">No hay trabajadores registrados en esta sede.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

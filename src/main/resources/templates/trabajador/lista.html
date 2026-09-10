@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Trabajadores</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container py-4">
+
+<nav class="nav nav-tabs mb-4">
+    <a class="nav-link" href="/inventario">Inventario</a>
+    <a class="nav-link" href="/marca">Marcas</a>
+    <a class="nav-link" href="/tipo">Tipos de Equipo</a>
+    <a class="nav-link" href="/sede">Sedes</a>
+    <a class="nav-link active" href="/trabajador">Trabajadores</a>
+</nav>
+
+<h2>Lista de Trabajadores</h2>
+
+<div th:if="${msg}" class="alert alert-success my-3"
+     th:classappend="${#strings.contains(msg, 'borrado')} ? 'alert-danger' : 'alert-success'"
+     th:text="${msg}"></div>
+
+<a href="/trabajador/nuevo" class="btn btn-primary my-3">Nuevo Trabajador</a>
+
+<table class="table table-striped align-middle">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>DNI del trabajador</th>
+        <th>Correo del trabajador</th>
+        <th>Nombre del trabajador</th>
+        <th>Apellidos del trabajador</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="trab, stat : ${listaTrabajadores}">
+        <td th:text="${stat.index + 1}">1</td>
+        <td th:text="${trab.dni}">DNI</td>
+        <td th:text="${trab.correo}">Correo</td>
+        <td th:text="${trab.nombres}">Nombre</td>
+        <td th:text="${trab.apellidos}">Apellidos</td>
+        <td>
+            <a th:href="@{'/trabajador/editar?id=' + ${trab.dni}}" class="btn btn-primary btn-sm">Editar</a>
+            <a th:href="@{'/trabajador/borrar?id=' + ${trab.dni}}" class="btn btn-danger btn-sm"
+               onclick="return confirm('¿Está seguro de eliminar este trabajador?')">Borrar</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
